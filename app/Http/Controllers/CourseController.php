@@ -114,7 +114,7 @@ class CourseController extends Controller
         
         $get_tag = DB::table("tags")->get();
 
-        $course_tag = DB::table("course_tags")->where('course_id',$id)->first();
+        $course_tag = DB::table("course_tags")->where('course_id',$id)->pluck('tag_id')->toArray();
         $course_file = DB::table("course_files")->where('course_id',$id)->first();
 
 
@@ -155,6 +155,21 @@ class CourseController extends Controller
             'updated_at'=> now()
 
         ]); 
+
+        DB::table('course_tags')->where('course_id',$id)->delete();
+
+        $tags = $request->tag;
+
+        foreach($tags as $tag){
+
+            DB::table('course_tags')->insert([
+
+                'tag_id'=> $tag,
+
+                'course_id'=> $id
+
+            ]);
+       }
 
         return redirect()->route('course.show')->with('success','');
     }

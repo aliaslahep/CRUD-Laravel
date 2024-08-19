@@ -65,9 +65,8 @@
                                 <b>Tags</b>
 
                                 @foreach($tags as $tag)
-                                    
                                     <div class="mx-3">
-                                        <input type="checkbox" name="tag[]" class="m-2" value={{$tag->id}} >{{$tag->tag}}
+                                        <input type="checkbox" name="tag[]" class="m-2" value={{$tag->id}} {{in_array($tag->id,$course_tag) ? "checked" : ""}}>{{$tag->tag}}
                                     </div>
                                 @endforeach
                                 <br/>
