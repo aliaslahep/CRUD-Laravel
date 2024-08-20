@@ -142,6 +142,20 @@ class CourseController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        
+        $course = DB::table('courses')->where('id',$id)->first();
+
+        if( $request->hasFile('thumbnail') ) {
+            $img_extension = $request->file("thumbnail")->getClientOriginalExtension();
+            $image = $request->file("thumbnail")->storeAs(
+        
+                "thumbnail", date('YmdHis').'.'.$img_extension
+        
+            );
+        } else {
+
+            $image = $course->thumbnail;
+        }
 
 
         $course = DB::table('courses')->where('id',$id)->update([
@@ -151,6 +165,8 @@ class CourseController extends Controller
             'content'=> $request->content,
 
             'category'=> $request->category,
+
+            'thumbnail'=> $image,
 
             'updated_at'=> now()
 
@@ -169,9 +185,20 @@ class CourseController extends Controller
                 'course_id'=> $id
 
             ]);
-       }
+        }
 
         return redirect()->route('course.show')->with('success','');
+    }
+
+    public function thumbnail_delete($id) {
+
+        $course = DB::table('courses')->where('id',$id)->update([
+
+            'thumbnail'=> ''
+        ]);
+
+        return redirect()->route("course.edit",['id' => $id])->with('success','');
+
     }
 
     public function delete($id) {

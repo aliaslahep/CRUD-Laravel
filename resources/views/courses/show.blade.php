@@ -33,9 +33,10 @@
                     
                                 $category = DB::table('categories')->where(['id'=>$category_id])->first();
 
+
                             @endphp
 
-                            <tr class="text-center h-10">
+                            <tr class="text-center h-12">
                                 <td>{{$i++}}</td>
                                 <td>{{$course->title}}</td>
                                 <td>{{$category->category}}</td>

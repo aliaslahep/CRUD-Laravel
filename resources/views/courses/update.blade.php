@@ -50,12 +50,14 @@
                                 <b>Thumbnail</b>
                                     <input type="file" name="thumbnail">
                                 <br>
+                                @if(!empty($course->thumbnail))
                                 <div class="my-3 flex ">
                                     <div class="file_name mr-3">
                                         <p class="text-blue-700">{{$course->thumbnail}}</p>
                                     </div>
-                                    <a href="" class="text-red-600"><b>X</b></a>
+                                    <a href="/thumbnail/delete/{{$course->id}}" class="text-red-600"><b>X</b></a>
                                 </div>
+                                @endif
                                 @if($errors->has('thumbnail'))
                                     <span class="text-red-500">{{ $errors->first('thumbnail') }}</span><br>
                                 @endif
