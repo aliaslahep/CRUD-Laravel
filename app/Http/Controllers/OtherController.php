@@ -34,4 +34,18 @@ class OtherController extends Controller
         return response()->json(['success' => true, 'data' => $category]);        
     }
 
+    public function tag_add(Request $request) {
+
+        $tag = DB::table('tags')->insert([
+            
+            'tag'=> $request->tag,
+            'created_at'=> now(),
+            'updated_at'=> now(),
+        ]);
+
+        
+
+        return response()->json(['success' => true, 'data' => $tag]);        
+
+    }
 }

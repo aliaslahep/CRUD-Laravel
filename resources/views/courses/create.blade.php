@@ -22,6 +22,20 @@
             display: flex;
             justify-content: center;
         }
+        div.tag_popup {
+            visibility: hidden;
+            width: 40%;
+            height: 20%;
+            margin: 10%;
+            padding: auto;
+            position: fixed;
+            top: 100px;
+            border: 3px solid #5f5f5f;
+            background-color: #f1f1f1;
+            z-index: 9;
+            display: flex;
+            justify-content: center;
+        }
     </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -67,6 +81,7 @@
                             </div>
 
                             <div class="category_popup" id="category_popup">
+                                <b class="my-3">Add Category</b>
                                 <input type="text" id="category_input" class="category_input h-10 mt-9 mx-4" name="category_input">
                                 <input type="button" id="add_category_id" value="Add">
                             </div>
@@ -82,10 +97,11 @@
                             </div>
                             <div class="my-5 flex">
                                 <b>Tags</b>
+                                <a onclick="tag_popup()" class="ml-5 text-sm text-blue-600" >Add Tag +</a>
 
                                 @foreach($tags as $tag)
                                     
-                                    <div class="mx-3">
+                                    <div class="mx-3 mt-5" id="tags">
                                         <input type="checkbox" name="tag[]" class="m-2" value={{$tag->id}} {{in_array($tag->id,old('tag',[])) ? "checked" : ""}}>{{$tag->tag}}
                                     </div>
                                 @endforeach
@@ -97,6 +113,12 @@
                                 @endif
                             
                             </div>
+                            <div class="tag_popup" id="tag_popup">
+                                <b class="my-3">Add Tag</b>
+                                <input type="text" id="tag_input" class="tag_input h-10 mt-9 mx-4" name="tag_input">
+                                <input type="button" id="add_tag_id" value="Add">
+                            </div>
+
                             <div class="my-5">
                                 <b>File</b>
                                     <input type="file" name="file[]" multiple>
@@ -131,6 +153,7 @@
                                 dataType: "json",
                                 success: function(data){
                                     $('#category').append('<option value="' + data.id + '">' + data.category + '</option>');
+                                    
                                     category_popup_close(); 
                                 },
                                 error: function(xhr) {
@@ -139,6 +162,37 @@
                                 }
                             });
                         });
+
+                        $(document).on("click", "#add_tag_id", function(){
+
+                            var tag = $('#tag_input').val();
+
+                            if(tag.trim() === "") {
+                                alert("Input field is empty");
+                                return;
+                            }
+
+                            $.ajax({
+                                url: "{{ url('/tag/add') }}", 
+                                method: "POST",
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    tag: tag
+                                },
+                                dataType: "json",
+                                success: function(data){
+                                    $('#tags').append('<input type="checkbox" value="' + data.id + '">' + data.tag);
+                                    
+                                    tag_popup_close(); 
+                                },
+                                error: function(xhr) {
+
+                                    console.log(xhr.responseText);
+                                }
+                            });
+                            });
+                        
+                        
                     </script>
 
                 </div>
@@ -158,6 +212,14 @@
     function category_popup_close(){
 
         document.getElementById("category_popup").style.visibility = "hidden";
+    }
+    function tag_popup(){
+
+        document.getElementById("tag_popup").style.visibility = "visible";
+    }
+    function tag_popup_close(){
+
+        document.getElementById("tag_popup").style.visibility = "hidden";
     }
 </script>
     
