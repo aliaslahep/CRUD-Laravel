@@ -213,7 +213,7 @@ class CourseController extends Controller
 
     public function list() {
 
-        $course = DB::table('courses')->get();
+        $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'], 'users');
 
         return view('courses.list',[
             

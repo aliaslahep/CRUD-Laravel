@@ -33,7 +33,6 @@
                     
                                 $category = DB::table('categories')->where(['id'=>$category_id])->first();
 
-
                             @endphp
 
                             <tr class="text-center h-12">
@@ -44,6 +43,8 @@
                                 <td><a href="{{url('courses/delete',$course->id)}}" class="px-4 py-2 bg-red-600 rounded-md font-semibold text-xs text-white">Delete</a></td>
                         @endforeach
                     </table>
+
+
 
                 </div>
             </div>
