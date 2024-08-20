@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
@@ -46,6 +47,18 @@ class OtherController extends Controller
         
 
         return response()->json(['success' => true, 'data' => $tag]);        
+
+    }
+
+    public function thumbnail_show($filename){
+
+        $path = 'images/'.$filename;
+
+        if (!Storage::exists('public/' . $path)) {
+            abort(404);
+        }
+
+        return view('view-image', ['path' => $path]);
 
     }
 }

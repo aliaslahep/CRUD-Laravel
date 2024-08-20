@@ -47,14 +47,8 @@ class CourseController extends Controller
 
 #        $path = Storage::putFileAs("thumbnail", new File('/'.date('Y')), "date('YmdHis')");
 
-        $img_extension = $request->file("thumbnail")->getClientOriginalExtension();
-        $image = $request->file("thumbnail")->storeAs(
-        
-            "thumbnail", date('YmdHis').'.'.$img_extension
-        
-        );
+        $image = $request->file("thumbnail")->store('images','public');
 
-        
         $course_id = DB::table('courses')->insertGetId([
             
             'title'=> $request->title,

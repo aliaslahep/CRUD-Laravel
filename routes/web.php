@@ -36,6 +36,8 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
     
     Route::get('/thumbnail/delete/{id}', [OtherController::class, 'thumbnail_delete'])->name('thumbnail.delete');
 
+    Route::get('/thumbnail/show/{filename}', [OtherController::class, 'thumbnail_show'])->name('thumbnail.show');
+
     Route::post('/category/add', [OtherController::class, 'category_add']);
     Route::post('/tag/add', [OtherController::class, 'tag_add']);
 

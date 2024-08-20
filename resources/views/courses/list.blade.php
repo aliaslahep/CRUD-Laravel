@@ -14,8 +14,9 @@
 
                 <table class="w-full border-black-50">
 
-                    <tr class="bg-green-900 h-10 text-black">
+                    <tr class="text-center bg-green-900 h-10 text-black">
                         <th>SI.No</th>
+                        <th>Thumbnail</th>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Created By</th>
@@ -24,7 +25,7 @@
                     @php 
                         $i=1
                     @endphp   
-                    
+
                     
                     @foreach($courses as $course)
 
@@ -40,6 +41,7 @@
 
                         <tr class="text-center h-10">
                             <td>{{$i++}}</td>
+                            <td><img src="{{asset('storage/'.$course->thumbnail)}}" width="40" height="70"></td>
                             <td>{{$course->title}}</td>
                             <td>{{$category->category}}</td>
                             <td>{{$creator->name}}
