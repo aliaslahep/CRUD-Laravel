@@ -5,6 +5,24 @@
         </h2>
     </x-slot>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        div.category_popup {
+            visibility: hidden;
+            width: 40%;
+            height: 20%;
+            margin: 10%;
+            padding: auto;
+            position: fixed;
+            top: 100px;
+            border: 3px solid #5f5f5f;
+            background-color: #f1f1f1;
+            z-index: 9;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -31,6 +49,7 @@
                             </div>
                             <div class="my-5">
                                 <b>Categroy </b>
+                                    <a onclick="category_popup()" class="ml-5 text-sm text-blue-600" >Add category +</a>
                                     <select name="category" class="w-full p-2 border rounded">
                                         <option></option>
 
@@ -46,6 +65,12 @@
                                     <span class="text-red-500">{{ $errors->first('category') }}</span><br>
                                 @endif
                             </div>
+
+                            <div class="category_popup" id="category_popup">
+                                <input type="text" id="category_input" class="category_input h-10 mt-9 mx-4" name="category_input">
+                                <input type="button" id="add_category_id" value="Add">
+                            </div>
+
                             <div class="my-5">
                                 <b>Thumbnail</b>
                                     <input type="file" name="thumbnail">
@@ -85,11 +110,54 @@
                             </center>
                         </div>
                     </form>
+
+                    <script>
+                        $(document).on("click", "#add_category_id", function(){
+
+                            var category = $('#category_input').val();
+                    
+                            if(category.trim() === "") {
+                                alert("Input field is empty");
+                                return;
+                            }
+                    
+                            $.ajax({
+                                url: "{{ url('/category/add') }}", 
+                                method: "POST",
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    category: category
+                                },
+                                dataType: "json",
+                                success: function(data){
+                                    $('#category').append('<option value="' + data.id + '">' + data.category + '</option>');
+                                    category_popup_close(); 
+                                },
+                                error: function(xhr) {
+                    
+                                    console.log(xhr.responseText);
+                                }
+                            });
+                        });
+                    </script>
+
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
 
-   
+
+
+<script>
+
+    function category_popup(){
+
+        document.getElementById("category_popup").style.visibility = "visible";
+    }
+    function category_popup_close(){
+
+        document.getElementById("category_popup").style.visibility = "hidden";
+    }
+</script>
     

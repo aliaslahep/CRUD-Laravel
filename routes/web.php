@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\OtherController;
 
 use App\Http\Middleware\UserLogging;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,9 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
     Route::get('/courses/list', [CourseController::class, 'list'])->name('course.list');
     
     
-    Route::get('/thumbnail/delete/{id}', [CourseController::class, 'thumbnail_delete'])->name('thumbnail.delete');
+    Route::get('/thumbnail/delete/{id}', [OtherController::class, 'thumbnail_delete'])->name('thumbnail.delete');
+
+    Route::post('/category/add', [OtherController::class, 'category_add']);
 
 });
 

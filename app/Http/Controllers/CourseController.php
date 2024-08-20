@@ -190,16 +190,7 @@ class CourseController extends Controller
         return redirect()->route('course.show')->with('success','');
     }
 
-    public function thumbnail_delete($id) {
 
-        $course = DB::table('courses')->where('id',$id)->update([
-
-            'thumbnail'=> ''
-        ]);
-
-        return redirect()->route("course.edit",['id' => $id])->with('success','');
-
-    }
 
     public function delete($id) {
 
@@ -213,7 +204,7 @@ class CourseController extends Controller
 
     public function list() {
 
-        $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'], 'users');
+        $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
 
         return view('courses.list',[
             
