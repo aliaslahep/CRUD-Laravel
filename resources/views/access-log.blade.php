@@ -44,17 +44,30 @@
 
                         <div class="search-container flex justify-evenly">                    
                             <div class="from flex m-2 h-6">
+
+                                @php
+                                    if(!empty($old_from)){
+
+                                        $from = date('Y-m-d',strtotime($old_from));
+                                   
+                                    } else {
+                                        $from = "2024-08-20";
+                                    }
+                                    if(!empty($old_to)){
+                                        $to = date('Y-m-d',strtotime($old_to));
+                                    } else {
+                                     
+                                        $to = date('Y-m-d',strtotime(now()));
+                                    }
+                                @endphp
+
                                 <b>From</b>
-                                <input type="date" name="from" class="ml-2" value="{{ empty($old_from) ? "2024-08-20" : "$old_from"}}"> 
+                                <input type="date" name="from" class="ml-2" value="{{ $from }}"> 
                             </div>
                             <div class="to flex h-6 m-2">
                                 <b>To</b>
                                 
-                                @php
-                                    $to = date('Y-m-d',strtotime(now()))
-                                @endphp
-                                
-                                <input type="date" name="to" class="ml-2" value="{{ !empty($old_to) ? $old_to : $to }}">
+                                <input type="date" name="to" class="ml-2" value="{{ $to }}">
                             </div>
                         </div>
                         <div class="search-container flex justify-evenly">                    
@@ -62,7 +75,7 @@
                                 <input type="submit" name="search" class="ml-2 p-1 h-8 rounded-md bg-blue-600" value="Search"> 
                             </div>
                             <div class="from flex m-3 h-6">
-                                <a href="generate-pdf/{{$old_from}}/{{$old_to}}/{{$old_user}}" name="pdf_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download PDF</a> 
+                                <a href="{{url('generate-pdf', [$old_from, $old_to, $old_user, urlencode($old_url)]) }}" name="pdf_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download PDF</a> 
                             </div>
                             <div class="from flex m-3 h-6">
                                 <a href="generate-excel/{{$old_from}}/{{$old_to}}/{{$old_user}}" name="excel_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download Excel</a>  

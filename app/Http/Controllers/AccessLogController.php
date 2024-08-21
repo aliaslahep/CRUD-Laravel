@@ -85,11 +85,14 @@ class AccessLogController extends Controller
         ]);
     }
 
-    public function generate_pdf($from ,$to,$user_id) {
+    public function generate_pdf($from ,$to,$user_id,$url) {
 
+
+        $url = urldecode($url);
         $filter_log = DB::table('access_logs')
                         ->leftJoin('users','access_logs.user_id','=','users.id')
                         ->whereBetween('access_log',[$from,$to])
+                        ->where('url','=',$url)
                         ->where('user_id','=',$user_id)
                         ->get();
               
