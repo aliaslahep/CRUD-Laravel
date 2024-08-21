@@ -23,10 +23,11 @@
                                 <select class="" name="user">
                                     <option></option>
                                     @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
+                                        <option value="{{$user->id}}" {{ $old_user == "" || $old_user != $user->id ? "" : "selected"}}>{{$user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            
                             <div class="url flex m-2">
                                 <b class="mr-2 mt-2">URL</b>
                                 <select class="" name="url">
@@ -35,7 +36,7 @@
                                         @php
                                             $url = explode("/",$log->url);   
                                         @endphp
-                                        <option value="{{$log->url}}">{{$log->url}}</option>
+                                        <option value="{{$log->url}}" {{$old_url === "" || $old_url != $log->url ? "" : "selected" }}>{{$log->url}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -55,13 +56,18 @@
                             <div class="from flex m-3 h-6">
                                 <input type="submit" name="search" class="ml-2 p-1 h-8 rounded-md bg-blue-600" value="Search"> 
                             </div>
+                            <div class="from flex m-3 h-6">
+                                <input type="button" name="excel_download" class="ml-2 p-1 h-8 rounded-md bg-slate-500" value="Download Sheet"> 
+                            </div>
+                            <div class="from flex m-3 h-6">
+                                <input type="button" name="pdf_download" class="ml-2 p-1 h-8 rounded-md bg-slate-500" value="Download Pdf"> 
+                            </div>
                         </div>                   
 
                     </div>
                     
 
                 </form>
-
                 <table class="w-full border-black-50">
                     <tr class="text-center bg-green-900 h-10 text-black">
                         <th>IP Address</th>

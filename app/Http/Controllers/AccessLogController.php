@@ -69,7 +69,10 @@ class AccessLogController extends Controller
             'logs'=> $filter_log,
             "logs_url"=> $log_url,
             "users"=> $users,
-            "to"=> date('Y-m-d',strtotime("$to"))
+            "to"=> date('Y-m-d',strtotime("$to")),
+            "old_url" =>$url,
+            "old_user"=> $user
+
         ]);
     }
 }
