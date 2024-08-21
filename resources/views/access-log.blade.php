@@ -19,17 +19,18 @@
                         <div class="search-container  p-2 m-2 flex justify-evenly">
 
                             <div class="username flex m-2">
-                                <p>Username</p>
-                                <select class="ml-2 h-6" name="user">
+                                <b class="mr-2 mt-2">Username</b>
+                                <select class="" name="user">
+                                    <option></option>
                                     @foreach($users as $user)
                                         <option value="{{$user->id}}">{{$user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="url flex m-2">
-                                <p>URL</p>
-                                <select class="ml-2 h-6" name="url">
-                                    
+                                <b class="mr-2 mt-2">URL</b>
+                                <select class="" name="url">
+                                    <option></option>
                                     @foreach($logs_url as $log)
                                         @php
                                             $url = explode("/",$log->url);   
@@ -42,11 +43,11 @@
 
                         <div class="search-container flex justify-evenly">                    
                             <div class="from flex m-2 h-6">
-                                <p>From</p>
+                                <b>From</b>
                                 <input type="date" name="from" class="ml-2" value="2024-08-20"> 
                             </div>
                             <div class="to flex h-6 m-2">
-                                <p>To</p>
+                                <b>To</b>
                                 <input type="date" name="to" class="ml-2" value="{{ $to }}">
                             </div>
                         </div>

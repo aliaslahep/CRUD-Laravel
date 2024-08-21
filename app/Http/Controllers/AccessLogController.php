@@ -41,7 +41,23 @@ class AccessLogController extends Controller
             $to = date('Y-m-d 23:59:59',strtotime($request->to));
         }
 
-        $filter_log = DB::table("access_logs")->leftJoin("users","access_logs.user_id","=","users.id")->whereBetween('access_log' , [$from,$to])->get();
+        $filter_log = DB::table("access_logs")
+                            ->leftJoin("users","access_logs.user_id","=","users.id")
+                            ->whereBetween('access_log' , [$from,$to]);
+
+        if($user != ""){
+            
+            $filter_log->where('user_id','=', $user);
+
+        }
+
+        if($url != ""){
+
+            $filter_log->where('url','=', $url);
+
+        }
+
+        $filter_log = $filter_log->get();
 
         $log_url = DB::table("access_logs")->select("url")->distinct()->get();
 
