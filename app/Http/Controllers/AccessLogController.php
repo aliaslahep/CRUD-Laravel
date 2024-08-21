@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Access_logs;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
+use PDF;
+
+use App\Models\User;
 class AccessLogController extends Controller
 {
     public function access_log() {
@@ -69,10 +73,24 @@ class AccessLogController extends Controller
             'logs'=> $filter_log,
             "logs_url"=> $log_url,
             "users"=> $users,
-            "to"=> date('Y-m-d',strtotime("$to")),
             "old_url" =>$url,
             "old_user"=> $user
 
         ]);
+    }
+
+    public function generate_pdf() {
+
+        $access_log = Access_logs::get();
+
+              
+        $pdf = PDF::loadView('pdf_download', [
+
+            'access_logs' => $access_log
+
+        ]);
+       
+        return $pdf->download('itsolutionstuff.pdf');
+
     }
 }

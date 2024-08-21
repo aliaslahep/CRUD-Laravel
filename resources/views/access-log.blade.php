@@ -23,7 +23,7 @@
                                 <select class="" name="user">
                                     <option></option>
                                     @foreach($users as $user)
-                                        <option value="{{$user->id}}" {{ $old_user == "" || $old_user != $user->id ? "" : "selected"}}>{{$user->name}}</option>
+                                        <option value="{{$user->id}}" {{ !empty($old_user)  && $old_user == $user->id ? "selected" : ""}}>{{$user->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -36,7 +36,7 @@
                                         @php
                                             $url = explode("/",$log->url);   
                                         @endphp
-                                        <option value="{{$log->url}}" {{$old_url === "" || $old_url != $log->url ? "" : "selected" }}>{{$log->url}}</option>
+                                        <option value="{{$log->url}}" {{ !empty($old_url)  && $old_url == $log->url ? "selected" : "" }}>{{$log->url}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -49,6 +49,11 @@
                             </div>
                             <div class="to flex h-6 m-2">
                                 <b>To</b>
+                                
+                                @php
+                                    $to = date('Y-m-d',strtotime(now()))
+                                @endphp
+                                
                                 <input type="date" name="to" class="ml-2" value="{{ $to }}">
                             </div>
                         </div>
@@ -57,7 +62,7 @@
                                 <input type="submit" name="search" class="ml-2 p-1 h-8 rounded-md bg-blue-600" value="Search"> 
                             </div>
                             <div class="from flex m-3 h-6">
-                                <input type="button" name="excel_download" class="ml-2 p-1 h-8 rounded-md bg-slate-500" value="Download Sheet"> 
+                                <a href="generate-pdf" name="excel_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download Sheet</a> 
                             </div>
                             <div class="from flex m-3 h-6">
                                 <input type="button" name="pdf_download" class="ml-2 p-1 h-8 rounded-md bg-slate-500" value="Download Pdf"> 

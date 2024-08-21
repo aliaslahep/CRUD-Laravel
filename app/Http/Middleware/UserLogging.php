@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
+use App\Models\Access_logs;
+
 
 use Closure;
 use Illuminate\Http\Request;
@@ -29,17 +31,19 @@ class UserLogging
 
             $ip_address = $request->ip(); 
 
-            DB::table("access_logs")->insert([
+            $access_logs = new Access_logs();
 
-                "ip_address" => $ip_address,
+            $access_logs->ip_address = $ip_address;
 
-                "user_id"=> $user->id,
+            $access_logs->user_id = $user->id;
 
-                "url"=> $url,
+            $access_logs->url = $url;
 
-                "access_log"=> now()
+            $access_logs->access_log = now();
+            
+            $access_logs->access_log = now();
 
-           ]);
+            $access_logs->save();
         
         }
 

@@ -5,6 +5,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OtherController;
 use App\Http\Controllers\AccessLogController;
 
+use App\Http\Controllers\PDFController;
+
+
 use App\Http\Middleware\UserLogging;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +50,9 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
 
 Route::get('/access-log', [AccessLogController::class, 'access_log'])->name('access_log');
 Route::post('/access-log', [AccessLogController::class, 'filter_log'])->name('filter_log');
+
+Route::get('generate-pdf', [AccessLogController::class, 'generate_pdf']);
+
 
 
 require __DIR__.'/auth.php';
