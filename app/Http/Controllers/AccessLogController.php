@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Access_logs;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Exports\UsersExport;
+
+
 
 use Illuminate\Http\Request;
 
@@ -24,7 +29,9 @@ class AccessLogController extends Controller
 
             "logs"=> $log,
             "logs_url"=> $log_url,
-            "users"=> $users
+            "users"=> $users,
+            "old_user" => "",
+            "old_url"=> ""
         ]);
     }
 
@@ -85,17 +92,23 @@ class AccessLogController extends Controller
         ]);
     }
 
-    public function generate_pdf($from ,$to,$user_id,$url) {
+    public function generate_pdf($user_id,$url,$from ,$to) {
 
-
-        $url = urldecode($url);
         $filter_log = DB::table('access_logs')
                         ->leftJoin('users','access_logs.user_id','=','users.id')
-                        ->whereBetween('access_log',[$from,$to])
-                        ->where('url','=',$url)
-                        ->where('user_id','=',$user_id)
-                        ->get();
+                        ->whereBetween('access_log',[$from,$to]);
               
+        if($url!="null"){
+
+            $filter_log->where("url","=", urldecode($url));
+        }
+        if($user_id!= "null"){
+
+            $filter_log->where("user_id","=", $user_id);
+        }
+
+        $filter_log = $filter_log->get();
+
         $pdf = PDF::loadView('pdf_download', [
 
             'access_logs' => $filter_log
@@ -105,4 +118,12 @@ class AccessLogController extends Controller
         return $pdf->download('access-log.pdf');
 
     }
+
+    public function export() {
+
+        return Excel::download(new UsersExport, 'users.xlsx');
+    
+    }
+
+
 }

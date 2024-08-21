@@ -51,7 +51,9 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
 Route::get('/access-log', [AccessLogController::class, 'access_log'])->name('access_log');
 Route::post('/access-log', [AccessLogController::class, 'filter_log'])->name('filter_log');
 
-Route::get('generate-pdf/{from}/{to}/{user_id}/{url}', [AccessLogController::class, 'generate_pdf'])->name('generate_pdf');
+Route::get('generate-pdf/{user_id}/{url}/{from}/{to}', [AccessLogController::class, 'generate_pdf'])->name('generate_pdf');
+
+Route::get('generate-excel', [AccessLogController::class, 'export'])->name('generate_excel');
 
 
 
