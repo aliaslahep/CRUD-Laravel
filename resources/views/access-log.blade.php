@@ -45,7 +45,7 @@
                         <div class="search-container flex justify-evenly">                    
                             <div class="from flex m-2 h-6">
                                 <b>From</b>
-                                <input type="date" name="from" class="ml-2" value="2024-08-20"> 
+                                <input type="date" name="from" class="ml-2" value="{{ empty($old_from) ? "2024-08-20" : "$old_from"}}"> 
                             </div>
                             <div class="to flex h-6 m-2">
                                 <b>To</b>
@@ -54,7 +54,7 @@
                                     $to = date('Y-m-d',strtotime(now()))
                                 @endphp
                                 
-                                <input type="date" name="to" class="ml-2" value="{{ $to }}">
+                                <input type="date" name="to" class="ml-2" value="{{ !empty($old_to) ? $old_to : $to }}">
                             </div>
                         </div>
                         <div class="search-container flex justify-evenly">                    
@@ -62,10 +62,10 @@
                                 <input type="submit" name="search" class="ml-2 p-1 h-8 rounded-md bg-blue-600" value="Search"> 
                             </div>
                             <div class="from flex m-3 h-6">
-                                <a href="generate-pdf" name="excel_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download Sheet</a> 
+                                <a href="generate-pdf/{{$old_from}}/{{$old_to}}/{{$old_user}}" name="pdf_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download PDF</a> 
                             </div>
                             <div class="from flex m-3 h-6">
-                                <input type="button" name="pdf_download" class="ml-2 p-1 h-8 rounded-md bg-slate-500" value="Download Pdf"> 
+                                <a href="generate-excel/{{$old_from}}/{{$old_to}}/{{$old_user}}" name="excel_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download Excel</a>  
                             </div>
                         </div>                   
 
@@ -87,6 +87,7 @@
                             <td>{{$log->name}}</td>
                             <td>{{$log->url}}</td>
                             <td>{{date('d M Y h:i a' ,strtotime($log->access_log))}}</td>
+
                         </tr>
                     @endforeach
                 </table>  

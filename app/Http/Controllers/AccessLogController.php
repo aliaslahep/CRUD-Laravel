@@ -67,6 +67,10 @@ class AccessLogController extends Controller
 
         $users = DB::table("users")->get();
 
+        if ($request->has('download') && $request->download == 'pdf') {
+            return $this->generate_pdf($filter_log);
+        }
+
 
         return view('/access-log',[
 
@@ -74,23 +78,28 @@ class AccessLogController extends Controller
             "logs_url"=> $log_url,
             "users"=> $users,
             "old_url" =>$url,
-            "old_user"=> $user
+            "old_user"=> $user,
+            "old_from" => $from,
+            "old_to" => $to
 
         ]);
     }
 
-    public function generate_pdf() {
+    public function generate_pdf($from ,$to,$user_id) {
 
-        $access_log = Access_logs::get();
-
+        $filter_log = DB::table('access_logs')
+                        ->leftJoin('users','access_logs.user_id','=','users.id')
+                        ->whereBetween('access_log',[$from,$to])
+                        ->where('user_id','=',$user_id)
+                        ->get();
               
         $pdf = PDF::loadView('pdf_download', [
 
-            'access_logs' => $access_log
+            'access_logs' => $filter_log
 
         ]);
        
-        return $pdf->download('itsolutionstuff.pdf');
+        return $pdf->download('access-log.pdf');
 
     }
 }

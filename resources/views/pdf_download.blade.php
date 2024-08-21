@@ -40,7 +40,7 @@
                 @foreach($access_logs as $access_log)
                     <tr>
                         <td>{{ $access_log->ip_address }}</td>
-                        <td>{{ $access_log->user_id }}</td>
+                        <td>{{ $access_log->name }}</td>
                         <td>{{ $access_log->url }}</td>
                         <td>{{ $access_log->access_log }}</td>
                     </tr>
