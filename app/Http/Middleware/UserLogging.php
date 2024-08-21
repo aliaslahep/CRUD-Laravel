@@ -27,7 +27,11 @@ class UserLogging
 
             $url = $request->url();
 
+            $ip_address = $request->ip(); 
+
             DB::table("access_logs")->insert([
+
+                "ip_address" => $ip_address,
 
                 "user_id"=> $user->id,
 

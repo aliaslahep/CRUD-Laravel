@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OtherController;
+use App\Http\Controllers\AccessLogController;
 
 use App\Http\Middleware\UserLogging;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,11 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
     Route::post('/category/add', [OtherController::class, 'category_add']);
     Route::post('/tag/add', [OtherController::class, 'tag_add']);
 
+
 });
+
+Route::get('/access-log', [AccessLogController::class, 'access_log'])->name('access_log');
+Route::post('/access-log', [AccessLogController::class, 'filter_log'])->name('filter_log');
+
 
 require __DIR__.'/auth.php';

@@ -41,19 +41,19 @@
 
                         <tr class="text-center h-10">
                             <td>{{$i++}}</td>
-                            <td><img src="{{asset('storage/'.$course->thumbnail)}}" width="40" height="70"></td>
+                            <td><img src="{{asset('storage/'.$course->thumbnail)}}" width="70" height="80"></td>
                             <td>{{$course->title}}</td>
                             <td>{{$category->category}}</td>
                             <td>{{$creator->name}}
                         </tr>
                         @endforeach
                 </table>  
-                <div class="d-flex justify-content-center mt-4">
+                <div class="d-flex justify-content-center mt-4 ">
                     {{ $courses->links('pagination::bootstrap-4') }}
                 </div>         
             </div>
             
         </div>
     </div>
-</div>
+</div>  
 </x-app-layout>

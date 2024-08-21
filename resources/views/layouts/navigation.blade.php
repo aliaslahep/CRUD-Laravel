@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('course.list')" :active="request()->routeIs('course.list')">
                         {{ __('All Course') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('access_log')" :active="request()->routeIs('access_log')">
+                        {{ __('Access Log') }}
+                    </x-nav-link>
                 </div>
             </div>
 
