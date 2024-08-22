@@ -59,7 +59,6 @@ Route::get('generate-excel/{user_id}/{url}/{from}/{to}', [AccessLogController::c
 Route::get('upload-log', [AccessLogController::class, 'upload_log'])->name('upload_log');
 Route::post('upload-log', [AccessLogController::class, 'file_upload'])->name('file_upload');
 
-Route::get('uploads-log', [AccessLogController::class, 'import_excel'])->name('import_excel');
 Route::get('upload-excel', [AccessLogController::class, 'upload_excel'])->name('upload_excel');
 
 

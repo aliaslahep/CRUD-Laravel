@@ -181,12 +181,6 @@ class AccessLogController extends Controller
 
         $file = $request->file("file")->storeAs("storage","sample.csv");
 
-
-        return redirect()->back()->with('file', $file);
-    }
-    public function import_excel() {
-        
-
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $reader->setInputEncoding('CP1252');
         $reader->setDelimiter(',');
@@ -194,9 +188,9 @@ class AccessLogController extends Controller
         $reader->setSheetIndex(0);
         $filePath = storage_path('app/storage/sample.csv');
 
-        if(file_exists($filePath)) {
+        if(file_exists($file)) {
 
-            $spreadsheet = $reader->load($filePath);
+            $spreadsheet = $reader->load($file);
 
             $sheet = $spreadsheet->getActiveSheet();
         
@@ -227,9 +221,7 @@ class AccessLogController extends Controller
         }
 
         return redirect()->back()->with('message','');
-        
-    }    
-
+    }
 
     public function upload_excel() {
 
@@ -277,7 +269,7 @@ class AccessLogController extends Controller
             
             Storage::delete('storage/sample.csv');
 
-            return view('dashboard');
+            return redirect()->back()->with('message','Suucessfully Uploaded');
         }
 
         return redirect()->back()->with('message','');

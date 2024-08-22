@@ -11,22 +11,25 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-                    {{!empty($file) ? $file : ""}}
+                @if (session('message'))
+                    <div class="alert alert-success text-blue-700">
+                        {{ session('message') }}
+                    </div>
+                @endif
 
                     <form action="upload-log" method="post" class="flex" enctype="multipart/form-data">
                         @csrf
                         <div class="from flex m-5">
                             <b class="m-1">Upload CSV File</b> <input type="file" name="file" class="ml-3">  
                         </div>
-                        @if($errors->has('file'))
-                            <span class="text-red-500">{{ $errors->first('file') }}</span><br>
-                        @endif
+                        
                         <div class="mt-5">
                             <input type="submit" value="Upload" class="px-3 py-1 rounded-md bg-blue-500">
                         </div>
-                        <div class="from flex m-3 h-6">
-                            <a href="{{url('uploads-log')}}" name="excel_import" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Import Excel</a>  
-                        </div>
+
+                        @if($errors->has('file'))
+                            <span class="text-red-500 mt-5 ml-3">{{ $errors->first('file') }}</span><br>
+                        @endif  
                     </form>
                 <table class="w-full border-black-50 mt-3">
     
@@ -47,7 +50,7 @@
                         @endforeach
                     @endif
                 </table>
-
+                
                 <div class="from flex m-5 h-6">
                     <a href="{{url('upload-excel')}}" name="excel_import" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Upload Excel</a>  
                 </div>
