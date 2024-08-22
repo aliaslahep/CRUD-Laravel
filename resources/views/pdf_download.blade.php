@@ -29,6 +29,10 @@
 <body>
     <div class="container">
         <div class="content">
+            <div class="flex justify-around">
+                <img src="C:\xaa\htdocs\laravel\public\storage\images\at0vvOaq2zFl9CiqgHvaEedoBHd24UGgYwPe9Kz1.jpg" width="100" height="100">
+                <h1>Access Log</h1>
+            </div>
             <table class="details">
                 <tr>
                     <th>IP Address</th>

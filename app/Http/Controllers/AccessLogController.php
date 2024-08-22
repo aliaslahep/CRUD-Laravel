@@ -181,21 +181,24 @@ class AccessLogController extends Controller
 
         $file = $request->file("file")->storeAs("storage","sample.csv");
 
+        $filePath = storage_path('app/storage/sample.csv');
+
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $reader->setInputEncoding('CP1252');
         $reader->setDelimiter(',');
         $reader->setEnclosure('');
         $reader->setSheetIndex(0);
-        $filePath = storage_path('app/storage/sample.csv');
 
-        if(file_exists($file)) {
+        $error = 1;
 
-            $spreadsheet = $reader->load($file);
+        if(file_exists($filePath)) {
+
+            $spreadsheet = $reader->load($filePath);
 
             $sheet = $spreadsheet->getActiveSheet();
         
             $data = [];
-        
+
             foreach ($sheet->getRowIterator() as $row_index=>$row) {
                 
                 if($row_index == 1) {
@@ -208,6 +211,11 @@ class AccessLogController extends Controller
 
                 foreach ($cells as $cell) {
 
+                    if($cell->getValue() == '') {
+
+                        $error ++;
+                    }
+
                     $row_data[] = $cell->getValue();
                 }
 
@@ -216,11 +224,12 @@ class AccessLogController extends Controller
             }
 
             return view('uploades',[
-                'data'=>$data
+                'data'=>$data,
+                'error' =>$error
             ]);
         }
 
-        return redirect()->back()->with('message','');
+        return redirect()->back()->with('error',"file not found");
     }
 
     public function upload_excel() {
@@ -238,6 +247,7 @@ class AccessLogController extends Controller
             
             $sheet = $spreadsheet->getActiveSheet();
             
+
             foreach ($sheet->getRowIterator() as $row_index => $row) {
 
                 if($row_index == 1) {
@@ -248,31 +258,42 @@ class AccessLogController extends Controller
 
                 $row_data = [];
 
+                $error = 1;
+
                 foreach ($cells as $cell) {
 
+                    if($cell == ""){
+                        $error++;
+                    }
                     $row_data[] = $cell->getValue();
 
                 }
 
-                DB::table('access_logs')->insert([
-                    
-                    'ip_address'=> $row_data[0],
-                    
-                    'user_id'=> $row_data[1],
+                if($error == 1) {
 
-                    'url'=> $row_data[2],
-                    
-                    'access_log'=> $row_data[3],
+                    DB::table('access_logs')->insert([
+                        
+                        'ip_address'=> $row_data[0],
+                        
+                        'user_id'=> $row_data[1],
 
-                ]);
+                        'url'=> $row_data[2],
+                        
+                        'access_log'=> $row_data[3],
+
+                    ]);
+                } else {
+                    
+                    return redirect()->back()->with('error','error');
+                }
             }
             
-            Storage::delete('storage/sample.csv');
+            Storage::delete('app/storage/sample.csv');
 
-            return redirect()->back()->with('message','Suucessfully Uploaded');
+            return redirect()->back()->with('message','Sucessfully Uploaded')->with('error',"nil");
         }
 
-        return redirect()->back()->with('message','');
+        return redirect()->back()->with('error','File not Found');
     }
 
 }

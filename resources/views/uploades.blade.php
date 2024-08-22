@@ -11,6 +11,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
+            
                 @if (session('message'))
                     <div class="alert alert-success text-blue-700">
                         {{ session('message') }}
@@ -44,17 +45,29 @@
                         @foreach($data as $row)
                             <tr class="text-center">
                                 @foreach($row as $cell)
-                                    <td>{{$cell}}</td>
+                                    @if($cell == "")
+                                        <td class="text-red-500">Missing Value !!</td>
+            
+                                    @else
+    
+                                        <td>{{$cell}}</td>
+                                    
+                                    @endif
+
                                 @endforeach
                             </tr>
                         @endforeach
                     @endif
                 </table>
+                @if(!empty($error))
+                    @if($error==1)
+                        <div class="from flex m-5 h-6">
+                            <a href="{{url('upload-excel')}}" name="excel_import" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Upload Excel</a>  
+                        </div>
+                   @endif
+                @endif
                 
-                <div class="from flex m-5 h-6">
-                    <a href="{{url('upload-excel')}}" name="excel_import" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Upload Excel</a>  
-                </div>
-                
+
             </div>
             
         </div>
