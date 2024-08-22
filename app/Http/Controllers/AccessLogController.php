@@ -75,11 +75,6 @@ class AccessLogController extends Controller
 
         $users = DB::table("users")->get();
 
-        if ($request->has('download') && $request->download == 'pdf') {
-            return $this->generate_pdf($filter_log);
-        }
-
-
         return view('/access-log',[
 
             'logs'=> $filter_log,
@@ -201,5 +196,47 @@ class AccessLogController extends Controller
             'data'=>$data
         ]);
     }    
+
+    public function upload_excel() {
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $reader->setInputEncoding('CP1252');
+        $reader->setDelimiter(',');
+        $reader->setEnclosure('');
+        $reader->setSheetIndex(0);
+        
+        $filePath = storage_path('app/sample.csv');
+        $spreadsheet = $reader->load($filePath);
+        
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        foreach ($sheet->getRowIterator() as $row) {
+
+            $cells = $row->getCellIterator();
+
+            $row_data = [];
+
+            foreach ($cells as $cell) {
+
+                $row_data[] = $cell->getValue();
+
+            }
+
+            DB::table('access_logs')->insert([
+                
+                'ip_address'=> $row_data[0],
+                
+                'user_id'=> $row_data[1],
+
+                'url'=> $row_data[2],
+                
+                'access_log'=> $row_data[3],
+
+            ]);
+        }
+
+
+        return view('dashboard');
+    }
 
 }
