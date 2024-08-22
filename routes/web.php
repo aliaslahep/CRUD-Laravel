@@ -54,7 +54,7 @@ Route::post('/access-log', [AccessLogController::class, 'filter_log'])->name('fi
 
 Route::get('generate-pdf/{user_id}/{url}/{from}/{to}', [AccessLogController::class, 'generate_pdf'])->name('generate_pdf');
 
-Route::get('generate-excel', [AccessLogController::class, 'generate_excel'])->name('generate_excel');
+Route::get('generate-excel/{user_id}/{url}/{from}/{to}', [AccessLogController::class, 'generate_excel'])->name('generate_excel');
 
 
 

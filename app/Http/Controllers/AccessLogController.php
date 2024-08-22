@@ -120,7 +120,22 @@ class AccessLogController extends Controller
 
     }
 
-    public function generate_excel() {
+    public function generate_excel($user_id,$url,$from ,$to) {
+
+        $filter_log = DB::table('access_logs')
+                        ->leftJoin('users','access_logs.user_id','=','users.id')
+                        ->whereBetween('access_log',[$from,$to]);
+              
+        if($url!="null"){
+
+            $filter_log->where("url","=", urldecode($url));
+        }
+        if($user_id!= "null"){
+
+            $filter_log->where("user_id","=", $user_id);
+        }
+
+        $filter_log = $filter_log->get();
 
         $spreadsheet  = new Spreadsheet();
 
@@ -131,18 +146,14 @@ class AccessLogController extends Controller
         $sheet->setCellValue('C1','URL');
         $sheet->setCellValue('D1','Access Log');
 
-        $data = [
-            ['1','ali','aslah','jasfg']
-        ]; 
-
         $row_num = 2;
 
-        foreach( $data as $row ) {
+        foreach( $filter_log as $row ) {
 
-            $sheet->setCellValue('A'.$row_num, $row[0]);
-            $sheet->setCellValue('B'.$row_num, $row[1]);
-            $sheet->setCellValue('C'.$row_num, $row[2]);
-            $sheet->setCellValue('D'.$row_num, $row[3]);
+            $sheet->setCellValue('A'.$row_num, $row->ip_address);
+            $sheet->setCellValue('B'.$row_num, $row->name);
+            $sheet->setCellValue('C'.$row_num, $row->url);
+            $sheet->setCellValue('D'.$row_num, $row->access_log);
             $row_num++;
         }
 

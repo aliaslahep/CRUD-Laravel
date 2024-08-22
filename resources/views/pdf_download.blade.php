@@ -42,7 +42,7 @@
                         <td>{{ $access_log->ip_address }}</td>
                         <td>{{ $access_log->name }}</td>
                         <td>{{ $access_log->url }}</td>
-                        <td>{{ $access_log->access_log }}</td>
+                        <td>{{ date("d/m/Y h:i a",strtotime($access_log->access_log)) }}</td>
                     </tr>
                     @endforeach
             </table>
