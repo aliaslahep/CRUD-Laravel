@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OtherController;
 use App\Http\Controllers\AccessLogController;
+use App\Http\Controllers\SpreadsheetController;
 
 use App\Http\Controllers\PDFController;
 
@@ -53,7 +54,8 @@ Route::post('/access-log', [AccessLogController::class, 'filter_log'])->name('fi
 
 Route::get('generate-pdf/{user_id}/{url}/{from}/{to}', [AccessLogController::class, 'generate_pdf'])->name('generate_pdf');
 
-Route::get('generate-excel', [AccessLogController::class, 'export'])->name('generate_excel');
+Route::get('generate-excel', [AccessLogController::class, 'generate_excel'])->name('generate_excel');
+
 
 
 

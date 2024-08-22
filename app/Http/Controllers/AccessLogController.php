@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Access_logs;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 use App\Exports\UsersExport;
 
@@ -119,10 +120,41 @@ class AccessLogController extends Controller
 
     }
 
-    public function export() {
+    public function generate_excel() {
 
-        return Excel::download(new UsersExport, 'users.xlsx');
-    
+        $spreadsheet  = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1','IP Address');
+        $sheet->setCellValue('B1','User Name');
+        $sheet->setCellValue('C1','URL');
+        $sheet->setCellValue('D1','Access Log');
+
+        $data = [
+            ['1','ali','aslah','jasfg']
+        ]; 
+
+        $row_num = 2;
+
+        foreach( $data as $row ) {
+
+            $sheet->setCellValue('A'.$row_num, $row[0]);
+            $sheet->setCellValue('B'.$row_num, $row[1]);
+            $sheet->setCellValue('C'.$row_num, $row[2]);
+            $sheet->setCellValue('D'.$row_num, $row[3]);
+            $row_num++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'access_log.xlsx';
+        
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit();
     }
 
 
