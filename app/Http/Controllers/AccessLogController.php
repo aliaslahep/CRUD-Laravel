@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Access_logs;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use PDF;
 
 use App\Models\User;
+use Validator;
 class AccessLogController extends Controller
 {
     public function access_log() {
@@ -162,43 +164,72 @@ class AccessLogController extends Controller
         $writer->save('php://output');
         exit();
     }
+    public function upload_log() {
 
+        return view('uploades');
+    }
+    public function file_upload(Request $request) {
+
+        $validator = Validator::make($request->all(), [
+
+            'file' => 'required|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $file = $request->file("file")->storeAs("storage","sample.csv");
+
+
+        return redirect()->back()->with('file', $file);
+    }
     public function import_excel() {
+        
 
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
         $reader->setInputEncoding('CP1252');
         $reader->setDelimiter(',');
         $reader->setEnclosure('');
         $reader->setSheetIndex(0);
-        $filePath = storage_path('app/sample.csv');
-        $spreadsheet = $reader->load($filePath);
+        $filePath = storage_path('app/storage/sample.csv');
 
-        $sheet = $spreadsheet->getActiveSheet();
-    
-        $data = [];
-    
-        foreach ($sheet->getRowIterator() as $row_index=>$row) {
-            
-            if($row_index == 1) {
-                continue;
+        if(file_exists($filePath)) {
+
+            $spreadsheet = $reader->load($filePath);
+
+            $sheet = $spreadsheet->getActiveSheet();
+        
+            $data = [];
+        
+            foreach ($sheet->getRowIterator() as $row_index=>$row) {
+                
+                if($row_index == 1) {
+                    continue;
+                }
+
+                $cells = $row->getCellIterator();
+
+                $row_data = [];
+
+                foreach ($cells as $cell) {
+
+                    $row_data[] = $cell->getValue();
+                }
+
+                $data[] = $row_data;
+
             }
-            $cells = $row->getCellIterator();
 
-            $row_data = [];
-
-            foreach ($cells as $cell) {
-
-                $row_data[] = $cell->getValue();
-            }
-
-            $data[] = $row_data;
-
+            return view('uploades',[
+                'data'=>$data
+            ]);
         }
 
-        return view('uploades',[
-            'data'=>$data
-        ]);
+        return redirect()->back()->with('message','');
+        
     }    
+
 
     public function upload_excel() {
 
@@ -208,42 +239,48 @@ class AccessLogController extends Controller
         $reader->setEnclosure('');
         $reader->setSheetIndex(0);
         
-        $filePath = storage_path('app/sample.csv');
-        $spreadsheet = $reader->load($filePath);
-        
-        $sheet = $spreadsheet->getActiveSheet();
-        
-        foreach ($sheet->getRowIterator() as $row_index => $row) {
+        $filePath = storage_path('app/storage/sample.csv');
 
-            if($row_index == 1) {
-                continue;
+        if(file_exists($filePath)) {
+            $spreadsheet = $reader->load($filePath);
+            
+            $sheet = $spreadsheet->getActiveSheet();
+            
+            foreach ($sheet->getRowIterator() as $row_index => $row) {
+
+                if($row_index == 1) {
+                    continue;
+                }
+
+                $cells = $row->getCellIterator();
+
+                $row_data = [];
+
+                foreach ($cells as $cell) {
+
+                    $row_data[] = $cell->getValue();
+
+                }
+
+                DB::table('access_logs')->insert([
+                    
+                    'ip_address'=> $row_data[0],
+                    
+                    'user_id'=> $row_data[1],
+
+                    'url'=> $row_data[2],
+                    
+                    'access_log'=> $row_data[3],
+
+                ]);
             }
+            
+            Storage::delete('storage/sample.csv');
 
-            $cells = $row->getCellIterator();
-
-            $row_data = [];
-
-            foreach ($cells as $cell) {
-
-                $row_data[] = $cell->getValue();
-
-            }
-
-            DB::table('access_logs')->insert([
-                
-                'ip_address'=> $row_data[0],
-                
-                'user_id'=> $row_data[1],
-
-                'url'=> $row_data[2],
-                
-                'access_log'=> $row_data[3],
-
-            ]);
+            return view('dashboard');
         }
 
-
-        return view('dashboard');
+        return redirect()->back()->with('message','');
     }
 
 }

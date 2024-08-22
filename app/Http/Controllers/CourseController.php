@@ -45,8 +45,6 @@ class CourseController extends Controller
         }
 
 
-#        $path = Storage::putFileAs("thumbnail", new File('/'.date('Y')), "date('YmdHis')");
-
         $image = $request->file("thumbnail")->store('images','public');
 
         $course_id = DB::table('courses')->insertGetId([
