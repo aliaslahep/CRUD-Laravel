@@ -168,5 +168,38 @@ class AccessLogController extends Controller
         exit();
     }
 
+    public function import_excel() {
+
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        $reader->setInputEncoding('CP1252');
+        $reader->setDelimiter(',');
+        $reader->setEnclosure('');
+        $reader->setSheetIndex(0);
+        $filePath = storage_path('app/sample.csv');
+        $spreadsheet = $reader->load($filePath);
+
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        $data = [];
+    
+        foreach ($sheet->getRowIterator() as $row) {
+            
+            $cells = $row->getCellIterator();
+
+            $row_data = [];
+
+            foreach ($cells as $cell) {
+
+                $row_data[] = $cell->getValue();
+            }
+
+            $data[] = $row_data;
+
+        }
+
+        return view('uploades',[
+            'data'=>$data
+        ]);
+    }    
 
 }

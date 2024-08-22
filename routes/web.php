@@ -56,6 +56,8 @@ Route::get('generate-pdf/{user_id}/{url}/{from}/{to}', [AccessLogController::cla
 
 Route::get('generate-excel/{user_id}/{url}/{from}/{to}', [AccessLogController::class, 'generate_excel'])->name('generate_excel');
 
+Route::get('import-excel', [AccessLogController::class, 'import_excel'])->name('import_excel');
+
 
 
 

@@ -81,6 +81,9 @@
                             <div class="from flex m-3 h-6">
                                 <a href="{{url('generate-excel',[$old_user ?? "null", urlencode($old_url ?? "null"),date('Y-m-d H:i:s',strtotime($from)), date('Y-m-d 23:59:59',strtotime($to)) ])}}" name="excel_download" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Download Excel</a>  
                             </div>
+                            <div class="from flex m-3 h-6">
+                                <a href="{{url('import-excel')}}" name="excel_import" class="text-black ml-2 p-1 h-8 rounded-md bg-slate-500">Import Excel</a>  
+                            </div>
                         </div>                   
 
                     </div>
