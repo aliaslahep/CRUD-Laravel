@@ -96,7 +96,7 @@
                         <th>Username</th>
                         <th>URL</th>
                         <th>Access Log</th>
-                    </tr>
+                    </tr>   
 
                     @foreach($logs as $log)
                         <tr class="text-center h-10">

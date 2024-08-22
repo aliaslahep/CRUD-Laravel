@@ -177,8 +177,11 @@ class AccessLogController extends Controller
     
         $data = [];
     
-        foreach ($sheet->getRowIterator() as $row) {
+        foreach ($sheet->getRowIterator() as $row_index=>$row) {
             
+            if($row_index == 1) {
+                continue;
+            }
             $cells = $row->getCellIterator();
 
             $row_data = [];
@@ -210,7 +213,11 @@ class AccessLogController extends Controller
         
         $sheet = $spreadsheet->getActiveSheet();
         
-        foreach ($sheet->getRowIterator() as $row) {
+        foreach ($sheet->getRowIterator() as $row_index => $row) {
+
+            if($row_index == 1) {
+                continue;
+            }
 
             $cells = $row->getCellIterator();
 

@@ -12,15 +12,21 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="w-full border-black-50">
     
+                    <tr class="text-center bg-green-900 h-10 text-black">
+                        <th>IP Address</th>
+                        <th>Username</th>
+                        <th>URL</th>
+                        <th>Access Log</th>
+                    </tr>
 
                     @foreach($data as $row)
-                        <tr>
+                        <tr class="text-center">
                             @foreach($row as $cell)
                                 <td>{{$cell}}</td>
                             @endforeach
                         </tr>
                     @endforeach
-                    
+
                 </table>
 
                 <div class="from flex m-3 h-6">
