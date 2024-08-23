@@ -11,7 +11,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-
+                {{$user}}
                 <table class="w-full border-black-50">
 
                     <tr class="text-center bg-green-900 h-10 text-black">
@@ -41,7 +41,7 @@
 
                         <tr class="text-center h-10">
                             <td>{{$i++}}</td>
-                            <td><img src="{{asset('storage/'.$course->thumbnail)}}" width="70" height="80"></td>
+                            <td><img src="{{$course->created_by == $user ? asset('storage/'.$course->thumbnail) : ""}}" alt="course image" width="70" height="80"></td>
                             <td>{{$course->title}}</td>
                             <td>{{$category->category}}</td>
                             <td>{{$creator->name}}

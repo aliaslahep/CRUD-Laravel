@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
  
 
@@ -138,12 +139,9 @@ class CourseController extends Controller
         $course = DB::table('courses')->where('id',$id)->first();
 
         if( $request->hasFile('thumbnail') ) {
-            $img_extension = $request->file("thumbnail")->getClientOriginalExtension();
-            $image = $request->file("thumbnail")->storeAs(
-        
-                "thumbnail", date('YmdHis').'.'.$img_extension
-        
-            );
+            
+            $image = $request->file("thumbnail")->store('images','public');
+            
         } else {
 
             $image = $course->thumbnail;
@@ -198,9 +196,15 @@ class CourseController extends Controller
 
         $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
 
+        $user = Auth::user()->id;
+
         return view('courses.list',[
             
-            'courses'=> $course
+            'courses'=> $course,
+            'user'=> $user
+
         ]);
+
+
     }
 }
