@@ -15,7 +15,7 @@
                 @if(empty($path))
                     <h1 class="text-red-500">Image can only viewed by author</h1>
                 @else
-                    <image src="{{$path}}" width="500" height="500">
+                    <image src="{{$path}}" width="500" height="5    00">
                 @endif
 
             </div>

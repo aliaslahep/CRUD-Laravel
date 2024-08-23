@@ -172,7 +172,7 @@ class AccessLogController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'file' => 'required|max:2048',
+            'file' => 'required|mimes:csv|max:2048',
         ]);
 
         if ($validator->fails()) {

@@ -190,9 +190,9 @@ class CourseController extends Controller
 
     public function delete($id) {
 
-        $course = DB::table('courses')->where('id',$id)->delete();
-        $course = DB::table('course_tags')->where('course_id',$id)->delete();
-        $course = DB::table('course_files')->where('course_id',$id)->delete();
+        DB::table('courses')->where('id',$id)->delete();
+        DB::table('course_tags')->where('course_id',$id)->delete();
+        DB::table('course_files')->where('course_id',$id)->delete();
 
         return redirect()->route('course.show')->with('success','');
 
@@ -200,6 +200,7 @@ class CourseController extends Controller
 
     public function list() {
 
+    
         $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
 
         return view('courses.list',[
