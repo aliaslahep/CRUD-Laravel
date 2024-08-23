@@ -37,6 +37,8 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
     Route::get('/courses/delete/{id}', [CourseController::class, 'delete'])->name('course.delete');
 
     Route::get('/courses/list', [CourseController::class, 'list'])->name('course.list');
+
+    Route::get('/courses/list/{id}', [CourseController::class, 'show_image'])->name('list.image');
     
     
     Route::get('/thumbnail/delete/{id}', [OtherController::class, 'thumbnail_delete'])->name('thumbnail.delete');

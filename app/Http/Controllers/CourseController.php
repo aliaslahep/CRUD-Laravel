@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+
+
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -48,14 +52,16 @@ class CourseController extends Controller
 
         $image = $request->file("thumbnail")->store('images','public');
 
-        $course_id = DB::table('courses')->insertGetId([
-            
-            'title'=> $request->title,
-            'content'=> $request->content,
-            'category'=> $request->category,
-            'thumbnail'=> $image,
-            'created_by'=> auth()->id(),
-        ]);
+
+        $course = new Course();
+
+        $course->title = $request->title;
+        $course->content = $request->content;
+        $course->category = $request->category;
+        $course->thumbnail = $image;
+        $course->created_by = auth()->id();
+
+        $course->save();
 
 
         $tags = $request->tag;
@@ -66,7 +72,7 @@ class CourseController extends Controller
 
                 'tag_id'=> $tag,
 
-                'course_id'=> $course_id
+                'course_id'=> $course->id
 
             ]);
        }
@@ -79,7 +85,7 @@ class CourseController extends Controller
             DB::table('course_files')->insert([
 
                 'file' => $file,
-                'course_id' => $course_id
+                'course_id' => $course->id
             ]);
        }
 
@@ -196,15 +202,31 @@ class CourseController extends Controller
 
         $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
 
-        $user = Auth::user()->id;
-
         return view('courses.list',[
             
             'courses'=> $course,
-            'user'=> $user
 
         ]);
 
 
+    }
+
+    public function show_image($id) {
+
+        $course = Course::findOrFail($id);
+        
+        if($course->created_by == auth()->user()->id) {
+
+            $path = asset('storage/'.$course->thumbnail);
+
+
+                return view('image',[
+                    'path' => $path
+                ]);
+
+
+        }
+
+        return view('image');
     }
 }
