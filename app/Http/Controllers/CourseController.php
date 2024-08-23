@@ -50,15 +50,16 @@ class CourseController extends Controller
         }
 
 
-        $image = $request->file("thumbnail")->store('images','public');
+        $image = $request->file("thumbnail");
 
+        $image_path = $image->store('private/images');
 
         $course = new Course();
 
         $course->title = $request->title;
         $course->content = $request->content;
         $course->category = $request->category;
-        $course->thumbnail = $image;
+        $course->thumbnail = basename($image_path);
         $course->created_by = auth()->id();
 
         $course->save();
@@ -151,8 +152,8 @@ class CourseController extends Controller
         } else {
 
             $image = $course->thumbnail;
+            
         }
-
 
         $course = DB::table('courses')->where('id',$id)->update([
 
@@ -203,9 +204,12 @@ class CourseController extends Controller
     
         $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
 
+        $images = DB::table('courses')->select("thumbnail")->where("created_by", auth()->id())->first();
+
         return view('courses.list',[
             
             'courses'=> $course,
+            'images'=> $images
 
         ]);
 
@@ -216,18 +220,11 @@ class CourseController extends Controller
 
         $course = Course::findOrFail($id);
         
-        if($course->created_by == auth()->user()->id) {
+        if($course->created_by != Auth::id()) {
 
-            $path = asset('storage/'.$course->thumbnail);
-
-
-                return view('image',[
-                    'path' => $path
-                ]);
-
-
+            abort(403,'Unauthorized');
         }
 
-        return view('image');
+        return response()->file(storage_path('app/private/images/'.$course->thumbnail));
     }
 }

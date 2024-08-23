@@ -198,7 +198,7 @@ class AccessLogController extends Controller
             $sheet = $spreadsheet->getActiveSheet();
         
             $data = [];
-
+            
             foreach ($sheet->getRowIterator() as $row_index=>$row) {
                 
                 if($row_index == 1) {

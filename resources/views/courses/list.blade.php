@@ -43,8 +43,8 @@
 
                             <tr class="text-center h-10">
                                 <td>{{$i++}}</td>
-                                <td><a href="{{ route('list.image', ['id' => $course->id]) }}">
-                                        <img src="{{ asset('storage/'.$course->thumbnail) }}" alt="course image" width="70" height="80">
+                                <td><a href="{{ route('list.image', $course->id ) }}">
+                                        <p>View </p>
                                     </a>
                                 </td>
                                 <td>{{$course->title}}</td>

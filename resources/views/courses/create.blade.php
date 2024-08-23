@@ -48,7 +48,7 @@
 
                                 @csrf
 
-                                <b>Title :</b> 
+                                <b for="title">Title :</b> 
                                      <input type="text" name="title" class="w-full p-2 border rounded" value={{old('title')}}>
                                     @if($errors->has('title'))
                                         <span class="text-red-500">{{ $errors->first('title') }}</span><br>
