@@ -17,14 +17,14 @@
                                 @csrf
 
                                 <b>Title :</b> 
-                                     <input type="text" name="title" class="w-full p-2 border rounded" value={{$course->title}}>
+                                     <input type="text" name="title" class="w-full p-2 border rounded" value="{{$course->title}}">
                                     @if($errors->has('title'))
                                         <span class="text-red-500">{{ $errors->first('title') }}</span><br>
                                     @endif
                             </div>
                             <div class="my-5">
                                 <b>Content : </b>
-                                    <input type="text" name="content" class="w-full p-2 border rounded" value={{$course->content}}>
+                                    <input type="text" name="content" class="w-full p-2 border rounded" value="{{$course->content}}">
                                     @if($errors->has('content'))
                                         <span class="text-red-500">{{ $errors->first('content') }}</span><br>
                                     @endif

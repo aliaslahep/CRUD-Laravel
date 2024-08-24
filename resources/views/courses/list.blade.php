@@ -44,7 +44,8 @@
                             <tr class="text-center h-10">
                                 <td>{{$i++}}</td>
                                 <td><a href="{{ route('list.image', $course->id ) }}">
-                                        <p>View </p>
+                                        <img src="{{url(route('list.image', $course->id ))}}" height="90" width="90">    
+                                    {{--<p>View </p>--}}
                                     </a>
                                 </td>
                                 <td>{{$course->title}}</td>

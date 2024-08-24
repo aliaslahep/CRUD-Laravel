@@ -6,12 +6,12 @@ use App\Models\Course;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Http\File;
+
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
  
 
 class CourseController extends Controller
@@ -24,9 +24,13 @@ class CourseController extends Controller
         $get_tag = DB::table("tags")->get();
 
         return view("courses.create",[
+
             "categories"=> $get_category,
+
             "tags"=> $get_tag
+
         ]);
+
     }
 
     public function store(Request $request){
@@ -34,13 +38,21 @@ class CourseController extends Controller
         $validator = Validator::make( $request->all(), [
 
            "title"=>'required',
-            "content"=>'required',
-            "category"=>'required',
-            "thumbnail"=>'required|mimes:png,jpg,jpeg|max:10240',
-            'tag' => 'required|array',
-            'tag.*' => 'required|string|max:255',
-            "file" => "required|array",
-            'file.*' => 'required|mimes:pdf|max:10240',
+
+           "content"=>'required',
+
+           "category"=>'required',
+
+           "thumbnail"=>'required|mimes:png,jpg,jpeg|max:10240',
+
+           'tag' => 'required|array',
+
+           'tag.*' => 'required|string|max:255',
+
+           "file" => "required|array",
+
+           'file.*' => 'required|mimes:pdf|max:10240',
+
         ]);
 
         if( $validator->fails() ){
@@ -57,9 +69,13 @@ class CourseController extends Controller
         $course = new Course();
 
         $course->title = $request->title;
+
         $course->content = $request->content;
+
         $course->category = $request->category;
+
         $course->thumbnail = basename($image_path);
+
         $course->created_by = auth()->id();
 
         $course->save();
@@ -80,15 +96,21 @@ class CourseController extends Controller
 
       
        $files = $request->file('file');
+       
 
        foreach($files as $file) {
 
+            $file_path = $file->store('private/images');
+    
             DB::table('course_files')->insert([
 
-                'file' => $file,
-                'course_id' => $course->id
+                'file' => basename($file_path),
+
+                'course_id' => basename($course->id)
+
             ]);
-       }
+
+        }
 
         return redirect()->route("course.show")->with('success','');
 
@@ -97,13 +119,17 @@ class CourseController extends Controller
     public function show(){
 
         $courses = DB::table('courses')->where('created_by', auth()->id())->get();
+
         $category = DB::table('categories')->first();
 
         return view('courses.show',[
 
             'courses' => $courses,
+
             'category'=> $category
+
         ]);
+
     }
 
     public function edit($id) {
@@ -115,16 +141,24 @@ class CourseController extends Controller
         $get_tag = DB::table("tags")->get();
 
         $course_tag = DB::table("course_tags")->where('course_id',$id)->pluck('tag_id')->toArray();
+
         $course_file = DB::table("course_files")->where('course_id',$id)->first();
 
 
         return view('courses.update',[
+
             'course' => $course,
+
             'categories' => $get_category,
+
             'tags'=> $get_tag,
+
             'course_tag' => $course_tag,
+
             'course_file' => $course_file
+
         ]);
+
     }
 
     public function update($id , Request $request) {
@@ -134,20 +168,24 @@ class CourseController extends Controller
         $validator = Validator::make($request->all(),[
 
             'title'=> 'required',
+
             'content'=> 'required',
+
             'category'=> 'required'
+
         ]);
 
         if ($validator->fails()) {
 
             return redirect()->back()->withErrors($validator)->withInput();
+
         }
         
         $course = DB::table('courses')->where('id',$id)->first();
 
         if( $request->hasFile('thumbnail') ) {
             
-            $image = $request->file("thumbnail")->store('images','public');
+            $image = $request->file("thumbnail")->store('private/images');
             
         } else {
 
@@ -163,7 +201,7 @@ class CourseController extends Controller
 
             'category'=> $request->category,
 
-            'thumbnail'=> $image,
+            'thumbnail'=> basename($image),
 
             'updated_at'=> now()
 
@@ -184,6 +222,7 @@ class CourseController extends Controller
             ]);
         }
 
+        
         return redirect()->route('course.show')->with('success','');
     }
 
@@ -192,7 +231,9 @@ class CourseController extends Controller
     public function delete($id) {
 
         DB::table('courses')->where('id',$id)->delete();
+
         DB::table('course_tags')->where('course_id',$id)->delete();
+
         DB::table('course_files')->where('course_id',$id)->delete();
 
         return redirect()->route('course.show')->with('success','');
@@ -201,8 +242,7 @@ class CourseController extends Controller
 
     public function list() {
 
-    
-        $course = DB::table('courses')->orderBy('id','asc')->Paginate(3 , ['*'],'users');
+        $course = DB::table('courses')->orderBy('id','asc')->Paginate(4 , ['*'],'users');
 
         $images = DB::table('courses')->select("thumbnail")->where("created_by", auth()->id())->first();
 
@@ -222,7 +262,7 @@ class CourseController extends Controller
         
         if($course->created_by != Auth::id()) {
 
-            abort(403,'Unauthorized');
+            abort(404,'Not Found');
         }
 
         return response()->file(storage_path('app/private/images/'.$course->thumbnail));

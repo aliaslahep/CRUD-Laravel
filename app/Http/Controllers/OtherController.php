@@ -20,6 +20,13 @@ class OtherController extends Controller
 
     }
 
+    public function file_delete($id){
+
+        $course = DB::table('course_files')->where('id',$id)->delete();
+
+        return redirect()->route("course.edit",['id' => $id])->with('success','');
+    }
+
     public function category_add(Request $request) {
 
         $category = DB::table('categories')->insert([
@@ -40,8 +47,11 @@ class OtherController extends Controller
         $tag = DB::table('tags')->insert([
             
             'tag'=> $request->tag,
+
             'created_at'=> now(),
+            
             'updated_at'=> now(),
+        
         ]);
 
         
@@ -55,10 +65,14 @@ class OtherController extends Controller
         $path = 'images/'.$filename;
 
         if (!Storage::exists('public/' . $path)) {
+           
             abort(404);
+        
         }
 
         return view('view-image', ['path' => $path]);
 
     }
+
+    
 }
