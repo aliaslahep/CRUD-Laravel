@@ -1,6 +1,11 @@
+
+
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    
+
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -42,6 +47,19 @@
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
-        </div>
+
+            
+        </div><br/>
+
+        @if ($errors->has('status'))
+        
+                <div class="text-red-500 flex justify-center" >
+        
+                    {{ $errors->first('status') }}
+            
+                </div>
+    
+        @endif
+
     </form>
 </x-guest-layout>

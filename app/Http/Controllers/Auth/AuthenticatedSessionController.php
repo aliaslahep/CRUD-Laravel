@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -28,7 +29,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $users = DB::table('users')->where('id' , auth()->id())->first();
+
+        if ($users->status !== 1) {
+
+            Auth::logout();
+
+            return redirect()->back()->withErrors([
+                'status' => 'Your account is inactive.',
+            ]);
+        }
+
+
         return redirect()->intended(route('dashboard', absolute: false));
+
     }
 
     /**
