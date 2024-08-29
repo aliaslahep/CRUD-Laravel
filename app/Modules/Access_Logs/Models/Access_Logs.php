@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Modules\Access_Logs\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Course extends Model
+class Access_Logs extends Model
 {
     use HasFactory;
 
-    protected $table = "courses";
+    protected $table = "access_logs";
+    
 }

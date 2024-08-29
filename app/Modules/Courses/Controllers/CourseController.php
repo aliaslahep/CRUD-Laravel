@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Courses\Controllers;
 
-use App\Models\Course;
+use App\Http\Controllers\Controller;
+
+use App\Modules\Courses\Models\Course;
+
 
 
 use Illuminate\Http\Request;
@@ -23,7 +26,7 @@ class CourseController extends Controller
         
         $get_tag = DB::table("tags")->get();
 
-        return view("courses.create",[
+        return view("Courses::courses.create",[
 
             "categories"=> $get_category,
 
@@ -122,7 +125,7 @@ class CourseController extends Controller
 
         $category = DB::table('categories')->first();
 
-        return view('courses.show',[
+        return view('Courses::courses.show',[
 
             'courses' => $courses,
 
@@ -145,7 +148,7 @@ class CourseController extends Controller
         $course_file = DB::table("course_files")->where('course_id',$id)->first();
 
 
-        return view('courses.update',[
+        return view('Courses::courses.update',[
 
             'course' => $course,
 
@@ -246,7 +249,7 @@ class CourseController extends Controller
 
         $images = DB::table('courses')->select("thumbnail")->where("created_by", auth()->id())->first();
 
-        return view('courses.list',[
+        return view('Courses::courses.list',[
             
             'courses'=> $course,
             'images'=> $images

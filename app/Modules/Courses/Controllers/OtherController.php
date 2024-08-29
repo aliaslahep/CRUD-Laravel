@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Courses\Controllers;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

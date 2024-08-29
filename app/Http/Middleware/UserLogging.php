@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
-use App\Models\Access_logs;
+use App\Modules\Access_Logs\Models\Access_Logs;
 
 
 use Closure;

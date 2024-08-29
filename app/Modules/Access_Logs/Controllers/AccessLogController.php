@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Modules\Access_Logs\Controllers;
 
-use App\Models\Access_logs;
+use App\Http\Controllers\Controller;
+
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -28,7 +30,7 @@ class AccessLogController extends Controller
 
         $users = DB::table("users")->get();
 
-        return view("access-log",[
+        return view("Access_Logs::access-log",[
 
             "logs"=> $log,
             "logs_url"=> $log_url,
@@ -77,7 +79,7 @@ class AccessLogController extends Controller
 
         $users = DB::table("users")->get();
 
-        return view('/access-log',[
+        return view('Access_Logs::access-log',[
 
             'logs'=> $filter_log,
             "logs_url"=> $log_url,
@@ -166,7 +168,7 @@ class AccessLogController extends Controller
     }
     public function upload_log() {
 
-        return view('uploades');
+        return view('Access_Logs::uploades');
     }
     public function file_upload(Request $request) {
 
@@ -223,7 +225,7 @@ class AccessLogController extends Controller
 
             }
 
-            return view('uploades',[
+            return view('Access_Logs::uploades',[
                 'data'=>$data,
                 'error' =>$error
             ]);
