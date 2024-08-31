@@ -12,7 +12,7 @@
             <div class="dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-white-900">
                 <h2 class="text-title-md2 text-4xl font-bold text-black dark:text-white">
-                    Access Log 
+                    Access Log
                   </h2>
 
                 <form action="/access-log" method="post">
@@ -110,7 +110,7 @@
                             <td>{{$log->ip_address}}</td>
                             <td>{{$log->name}}</td>
                             <td>{{$log->url}}</td>
-                            <td>{{date('d M Y h:i a' ,strtotime($log->access_log))}}</td>
+                            <td>{{$log->access_log}}</td>
 
                         </tr>
                     @endforeach

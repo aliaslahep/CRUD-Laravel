@@ -5,6 +5,7 @@ namespace App\Modules\Access_Logs\Controllers;
 use App\Http\Controllers\Controller;
 
 
+use App\Modules\Access_Logs\Models\Access_Logs;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -24,6 +25,8 @@ class AccessLogController extends Controller
 {
     public function access_log() {
 
+        $sample = Access_Logs::where('user_id',17)->first();
+
         $log = DB::table("access_logs")->leftJoin("users","access_logs.user_id","=","users.id")->get();
 
         $log_url = DB::table("access_logs")->select("url")->distinct()->get();
@@ -32,6 +35,7 @@ class AccessLogController extends Controller
 
         return view("Access_Logs::access-log",[
 
+            "sample"=>$sample,
             "logs"=> $log,
             "logs_url"=> $log_url,
             "users"=> $users,
@@ -57,8 +61,7 @@ class AccessLogController extends Controller
             $to = date('Y-m-d 23:59:59',strtotime($request->to));
         }
 
-        $filter_log = DB::table("access_logs")
-                            ->leftJoin("users","access_logs.user_id","=","users.id")
+        $filter_log = Access_logs::leftJoin("users","access_logs.user_id","=","users.id")
                             ->whereBetween('access_log' , [$from,$to]);
 
         if($user != ""){

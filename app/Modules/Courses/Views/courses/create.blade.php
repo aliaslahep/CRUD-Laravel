@@ -43,7 +43,7 @@
                 <div class="p-6 text-white-900">
                                     
                     <h2 class="text-title-md2 text-4xl font-bold text-black dark:text-white">
-                        Create Course 
+                        {{$user->title}}
                       </h2>
 
                     <form name="users_form" action="{{url('/courses/create')}}" method="post" encType='multipart/form-data'>

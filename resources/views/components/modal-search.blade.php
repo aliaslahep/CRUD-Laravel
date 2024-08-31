@@ -40,14 +40,14 @@
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 translate-y-4"
         x-cloak
+        
     >
         <div
             class="bg-white dark:bg-gray-800 border border-transparent dark:border-gray-700/60 overflow-auto max-w-2xl w-full max-h-full rounded-lg shadow-lg"
-            @click.outside="searchOpen = false"
-            @keydown.escape.window="searchOpen = false"
+           
         >   
             <!-- Search form -->
-            <form class="border-b border-gray-200 dark:border-gray-700/60">
+            <form class="border-b border-gray-200 dark:border-gray-700/60" >
                 <div class="relative">
                     <label for="modal-search" class="sr-only">Search</label>
                     <input id="modal-search" class="w-full dark:text-gray-300 bg-white dark:bg-gray-800 border-0 focus:ring-transparent placeholder-gray-400 dark:placeholder-gray-500 appearance-none py-3 pl-10 pr-4" type="search" placeholder="Search Anything…" x-ref="searchInput" />
@@ -59,7 +59,7 @@
                     </button>
                 </div>
             </form>
-            <div class="py-4 px-2">
+            <div class="py-4 px-2" >
                 <!-- Recent searches -->
                 <div class="mb-3 last:mb-0">
                     <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase px-2 mb-2">Recent searches</div>
@@ -140,3 +140,4 @@
         </div>
     </div>                    
 </div>
+

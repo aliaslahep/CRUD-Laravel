@@ -22,6 +22,9 @@ class CourseController extends Controller
     
     public function create() {
 
+
+        $user = Course::where("id",93)->first();
+        
         $get_category = DB::table("categories")->get();
         
         $get_tag = DB::table("tags")->get();
@@ -30,7 +33,9 @@ class CourseController extends Controller
 
             "categories"=> $get_category,
 
-            "tags"=> $get_tag
+            "tags"=> $get_tag,
+
+            "user"=> $user
 
         ]);
 
