@@ -7,17 +7,21 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-white-900">
+
+                    <h2 class="text-title-md2 text-4xl m-5 font-bold text-black dark:text-white">
+                        My Courses
+                      </h2>
 
                     <table class="w-full border-black-50">
 
-                        <tr class="bg-green-900 h-10 text-black">
+                        <tr class="bg-gray-900 h-10 text-gray-500">
                             <th>SI.No</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th>Update</th>
-                            <th>Delete</th>
+                            <th>TITLE</th>
+                            <th>CATEGORY</th>
+                            <th>UPDATE</th>
+                            <th>DELETE</th>
                         </tr>
 
                         @php 

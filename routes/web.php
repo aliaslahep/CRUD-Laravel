@@ -29,6 +29,8 @@ Route::middleware(['auth',UserLogging::class])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     include __DIR__.'/../app/Modules/Courses/routes.php';
+
+    include __DIR__.'/../app/Modules/Access_logs/routes.php';
     
 });
 

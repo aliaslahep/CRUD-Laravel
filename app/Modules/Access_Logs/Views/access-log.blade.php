@@ -6,11 +6,14 @@
     </x-slot>
 
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-white-900">
+                <h2 class="text-title-md2 text-4xl font-bold text-black dark:text-white">
+                    Access Log 
+                  </h2>
 
                 <form action="/access-log" method="post">
                     @csrf
@@ -20,7 +23,7 @@
 
                             <div class="username flex m-2">
                                 <b class="mr-2 mt-2">Username</b>
-                                <select class="" name="user">
+                                <select class="w-full p-2 border-gray-400 dark:bg-gray-700 rounded" name="user">
                                     <option></option>
                                     @foreach($users as $user)
                                         <option value="{{$user->id}}" {{ !empty($old_user)  && $old_user == $user->id ? "selected" : ""}}>{{$user->name}}</option>
@@ -30,10 +33,9 @@
                             
                             <div class="url flex m-2">
                                 <b class="mr-2 mt-2">URL</b>
-                                <select class="" name="url">
+                                <select class="w-full p-2 border-gray-400 dark:bg-gray-700 rounded" name="url">
                                     <option></option>
-                                    @foreach($logs_url as $log)
-        
+                                    @foreach($logs_url as $log)        
                                         <option value="{{$log->url}}" {{ !empty($old_url)  && $old_url == $log->url ? "selected" : "" }}>{{$log->url}}</option>
                                     @endforeach
                                 </select>
@@ -62,13 +64,15 @@
                                     } 
                                 @endphp
 
+                                
+
                                 <b>From</b>
-                                <input type="date" name="from" class="ml-2" value="{{ $from }}"> 
+                                <input type="date" name="from" class="form-datepicker ml-2 w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" value="{{ $from }}"> 
                             </div>
                             <div class="to flex h-6 m-2">
                                 <b>To</b>
                                 
-                                <input type="date" name="to" class="ml-2" value="{{ $to }}">
+                                <input type="date" name="to" class="form-datepicker ml-2 w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" value="{{ $to }}">
                             </div>
                         </div>
                         <div class="search-container flex justify-evenly">                    
@@ -88,8 +92,13 @@
                     
 
                 </form>
+                
+                <br/>
+                <hr />
+                <br />
+
                 <table class="w-full border-black-50">
-                    <tr class="text-center bg-green-900 h-10 text-black">
+                    <tr class="text-center bg-gray-900 h-10 text-gray-500">
                         <th>IP Address</th>
                         <th>Username</th>
                         <th>URL</th>
@@ -107,7 +116,7 @@
                     @endforeach
                 </table>  
                 
-                
+                </div>
             </div>
             
         </div>
